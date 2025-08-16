@@ -1,5 +1,4 @@
-
-#!/data/project/sigma/bots/venv/bin/python
+#!/bin/python3
 # -*- coding: utf-8 -*-
 # LGPLv2+ license, look it up
 
@@ -18,14 +17,14 @@ from datetime import timedelta
 from ceterach.api import MediaWiki
 from ceterach.page import Page
 from ceterach import exceptions as exc
-from passwords import lcsb3
+from passwords import archivebot
 
 import mwparserfromhell as mwp
 
 API_URL = "https://en.wikipedia.org/w/api.php"
-LOGIN_INFO = "Lowercase sigmabot III", lcsb3
-SHUTOFF = "User:Lowercase sigmabot III/Shutoff"
-ARCHIVE_TPL = "User:MiszaBot/config"
+LOGIN_INFO = "ArchiveBot", archivebot
+SHUTOFF = "User:ArchiveBot/Shutoff"
+ARCHIVE_TPL = "Template:AutoArchive"
 FREQ = 30
 
 logger = twiggy.log.name("archivebot")
