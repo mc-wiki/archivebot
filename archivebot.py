@@ -354,7 +354,7 @@ class DiscussionPage(Page):
 
 
 class Archiver:
-    def __init__(self, api: MediaWiki, title: str, tl="Template:AutoArchive"):
+    def __init__(self, api: MediaWiki, title: str, tl="AutoArchive"):
         self.config = {'algo': 'old(24h)',
                        'archive': '',
                        'archiveheader': "{{archive}}{{archive box}}",
