@@ -14,15 +14,15 @@ import hashlib
 import twiggy
 from arrow import Arrow
 from datetime import timedelta
-from ceterach.api import MediaWiki
-from ceterach.page import Page
-from ceterach import exceptions as exc
+from ceterach.ceterach.api import MediaWiki
+from ceterach.ceterach.page import Page
+from ceterach.ceterach import exceptions as exc
 from passwords import archivebot
 
 import mwparserfromhell as mwp
 
-API_URL = "https://en.wikipedia.org/w/api.php"
-LOGIN_INFO = "ArchiveBot", archivebot
+API_URL = "https://minecraft.wiki/api.php"
+LOGIN_INFO = "ArchiveBot@ArchiveBot", archivebot
 SHUTOFF = "User:ArchiveBot/Shutoff"
 ARCHIVE_TPL = "Template:AutoArchive"
 FREQ = 30
@@ -91,7 +91,7 @@ def make_key(title, target):
     return sha256sum.hexdigest()
 
 
-class RedoableIterator(collections.Iterator):
+class RedoableIterator(collections.abc.Iterator):
     """
     Put a value back in the top of the stack of the generator.
     In Perl, you would do:
@@ -354,10 +354,10 @@ class DiscussionPage(Page):
 
 
 class Archiver:
-    def __init__(self, api: MediaWiki, title: str, tl="User:MiszaBot/config"):
+    def __init__(self, api: MediaWiki, title: str, tl="Template:AutoArchive"):
         self.config = {'algo': 'old(24h)',
                        'archive': '',
-                       'archiveheader': "{{Talk archive}}",
+                       'archiveheader': "{{archive}}{{archive box}}",
                        'maxarchivesize': '1954K',
                        'minthreadsleft': 5,
                        'minthreadstoarchive': 2,
@@ -604,7 +604,7 @@ class Archiver:
 import unittest
 
 
-class TestShit(unittest.TestCase):
+class UnitTests(unittest.TestCase):
     def setUp(self):
         self.config = {'algo': 'old(24h)',
                        'archive': '',
@@ -701,7 +701,8 @@ class TestShit(unittest.TestCase):
         self.assertRaises(ValueError, lambda: str2time(s).total_seconds())
 
 if __name__ == "__main__":
-    #unittest.main(verbosity=2)
+    # unittest.main(verbosity=2)
+
     import itertools
 
     def grouper(iterable, n, fillvalue=None):
@@ -726,6 +727,7 @@ if __name__ == "__main__":
     wt = page_gen_dec("Wikipedia talk")(generic_func)
 
     twiggy_setup()
+    logger.info("Running ArchiveBot...")
 
     api = MediaWiki(API_URL, config={"retries": 9, "sleep": 9, "maxlag": 9, "throttle": 0.5})
     api.login(*LOGIN_INFO)
@@ -786,4 +788,5 @@ if __name__ == "__main__":
                     continue
             else:
                 logger.fields(p=victim).info("Done")
+    logger.info("Checked all pages, done.")
 
